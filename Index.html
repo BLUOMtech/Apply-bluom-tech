@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BLUOM Tech Job Application</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef6ff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: white;
+      width: 90%;
+      max-width: 500px;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #0078ff;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      margin-bottom: 14px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #0078ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background: #005fcc;
+    }
+
+    #adminPanel {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      background: #f2fbff;
+      border-radius: 10px;
+      border: 1px solid #bde4ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>BLUOM Tech Job Application</h2>
+
+    <form id="applicationForm">
+      <label>First Name</label>
+      <input type="text" id="firstName" required />
+
+      <label>Last Name</label>
+      <input type="text" id="lastName" required />
+
+      <label>Email</label>
+      <input type="email" id="email" required />
+
+      <label>Date of Birth</label>
+      <input type="date" id="dob" required />
+
+      <label>Phone Number</label>
+      <input type="tel" id="phone" required />
+
+      <button type="submit">Submit Application</button>
+    </form>
+
+    <hr style="margin: 25px 0;" />
+
+    <h2>Admin Login</h2>
+    <input type="text" id="adminUser" placeholder="Username" />
+    <input type="password" id="adminPass" placeholder="Password" />
+    <button onclick="adminLogin()">Login</button>
+
+    <div id="adminPanel">
+      <h3>Submitted Applications</h3>
+      <ul id="appList"></ul>
+    </div>
+  </div>
+
+  <script>
+    // Load saved applications from localStorage
+    const applications = JSON.parse(localStorage.getItem("apps")) || [];
+
+    document.getElementById("applicationForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const data = {
+        first: firstName.value,
+        last: lastName.value,
+        email: email.value,
+        dob: dob.value,
+        phone: phone.value,
+        time: new Date().toLocaleString(),
+      };
+
+      applications.push(data);
+      localStorage.setItem("apps", JSON.stringify(applications));
+
+      alert("Application submitted! ✔️");
+      this.reset();
+      updateList();
+    });
+
+    function adminLogin() {
+      const user = document.getElementById("adminUser").value;
+      const pass = document.getElementById("adminPass").value;
+
+      if (user === "ADMIN" && pass === "Waffles2013.") {
+        document.getElementById("adminPanel").style.display = "block";
+        updateList();
+      } else {
+        alert("Incorrect login ❌");
+      }
+    }
+
+    function updateList() {
+      const list = document.getElementById("appList");
+      list.innerHTML = "";
+
+      applications.forEach((app, i) => {
+        const item = document.createElement("li");
+        item.innerHTML = `<strong>${i + 1}. ${app.first} ${app.last}</strong><br>Email: ${app.email}<br>Phone: ${app.phone}<br>DOB: ${app.dob}<br><em>Submitted: ${app.time}</em>`;
+        list.appendChild(item);
+      });
+    }
+  </script>
+</body>
+</html>
+
