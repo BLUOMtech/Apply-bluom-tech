@@ -1,226 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>BLUOM Tech Job Portal</title>
-
-<style>
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, #0a1a33, #1247a3);
-        color: white;
-        text-align: center;
-        padding-bottom: 100px;
-    }
-
-    h1 {
-        margin-top: 20px;
-        text-shadow: 0 0 20px #3ea6ff;
-    }
-
-    img.logo {
-        width: 130px;
-        margin-top: 20px;
-        filter: drop-shadow(0 0 10px #3ea6ff);
-        animation: glow 3s infinite alternate;
-    }
-
-    @keyframes glow {
-        from { filter: drop-shadow(0 0 10px #3ea6ff); }
-        to   { filter: drop-shadow(0 0 25px #79c4ff); }
-    }
-
-    .container {
-        width: 90%;
-        max-width: 450px;
-        margin: auto;
-        margin-top: 20px;
-        background: rgba(255,255,255,0.12);
-        padding: 20px;
-        border-radius: 12px;
-        backdrop-filter: blur(6px);
-        box-shadow: 0 0 20px rgba(0,0,0,0.4);
-    }
-
-    input, select {
-        width: 90%;
-        padding: 12px;
-        margin: 10px auto;
-        border-radius: 8px;
-        border: none;
-        outline: none;
-        font-size: 16px;
-    }
-
-    button {
-        width: 92%;
-        padding: 14px;
-        margin-top: 15px;
-        background: #3ea6ff;
-        border: none;
-        border-radius: 8px;
-        color: white;
-        font-size: 18px;
-        cursor: pointer;
-        font-weight: bold;
-        box-shadow: 0 0 20px #3ea6ff;
-    }
-
-    button:hover {
-        background: #60b8ff;
-    }
-
-    .toggle-dark {
-        position: fixed;
-        top: 15px;
-        right: 15px;
-        padding: 10px;
-        border-radius: 50%;
-        background: #ffffff33;
-    }
-
-    .admin-section {
-        display: none;
-        margin-top: 40px;
-    }
-
-    table {
-        width: 95%;
-        margin: auto;
-        margin-top: 20px;
-        border-collapse: collapse;
-    }
-
-    table td, table th {
-        padding: 10px;
-        background: rgba(255,255,255,0.15);
-        border-bottom: 1px solid rgba(255,255,255,0.25);
-    }
-
-    footer {
-        margin-top: 40px;
-        opacity: 0.7;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLUOM Tech Careers</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<button class="toggle-dark" onclick="toggleDark()">🌙</button>
-
-<img src="BLUOM-logo.png" class="logo">
-
-<h1>BLUOM Tech Job Portal</h1>
-
-<div class="container">
-    <h2>Apply For a Job</h2>
-
-    <input id="fname" placeholder="First Name">
-    <input id="lname" placeholder="Last Name">
-    <input id="dob" type="date" placeholder="Date of Birth">
-    <input id="email" type="email" placeholder="Email Address">
-    <input id="phone" type="tel" placeholder="Phone Number">
-
-    <select id="role">
-        <option>Developer</option>
-        <option>Designer</option>
-        <option>Marketing</option>
-        <option>Support</option>
-        <option>Intern</option>
-    </select>
-
-    <button onclick="submitApp()">Submit Application</button>
+<!-- Loading Screen -->
+<div id="loading">
+    <img src="BLUOM-logo.png" class="loader-logo">
+    <div class="spinner"></div>
 </div>
 
-<div class="container">
-    <h2>Admin Login</h2>
-    <input id="adminUser" placeholder="Username">
-    <input id="adminPass" placeholder="Password" type="password">
-    <button onclick="adminLogin()">Login</button>
-</div>
+<!-- Navigation -->
+<nav class="glass-nav">
+    <h2>BLUOM Careers</h2>
+    <ul>
+        <li onclick="navigate('home')">Home</li>
+        <li onclick="navigate('apply')">Apply</li>
+        <li onclick="navigate('admin-login')">Admin</li>
+    </ul>
+</nav>
 
-<div id="adminPanel" class="admin-section container">
-    <h2>Admin Dashboard</h2>
-    <p>Total Applications: <strong id="countApps">0</strong></p>
+<!-- HOME PAGE -->
+<section id="home" class="page visible">
+    <h1 class="title">Join BLUOM Tech 💙</h1>
+    <p class="subtitle">Build the future with us.</p>
 
-    <table id="appTable">
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-        </tr>
-    </table>
-</div>
+    <img src="BLUOM-logo.png" class="logo-3d">
+</section>
 
-<footer>© 2026 BLUOM Tech</footer>
+<!-- APPLY PAGE -->
+<section id="apply" class="page">
+    <h2 class="title">Apply for a Job</h2>
 
-<script>
-function toggleDark() {
-    if (document.body.style.background === "black") {
-        document.body.style.background = "linear-gradient(135deg, #0a1a33, #1247a3)";
-    } else {
-        document.body.style.background = "black";
-    }
-}
+    <form id="applyForm" class="glass-box">
+        <label>First Name</label>
+        <input type="text" id="firstName" required>
 
-// Store applications
-let apps = JSON.parse(localStorage.getItem("apps") || "[]");
-updateTable();
+        <label>Last Name</label>
+        <input type="text" id="lastName" required>
 
-function submitApp() {
-    let app = {
-        name: document.getElementById("fname").value + " " + document.getElementById("lname").value,
-        dob: document.getElementById("dob").value,
-        email: document.getElementById("email").value,
-        phone: document.getElementById("phone").value,
-        role: document.getElementById("role").value
-    };
+        <label>Email</label>
+        <input type="email" id="email" required>
 
-    apps.push(app);
-    localStorage.setItem("apps", JSON.stringify(apps));
-    updateTable();
+        <label>Phone Number</label>
+        <input type="tel" id="phone" required>
 
-    alert("Application Submitted! 💙");
-}
+        <label>Date of Birth</label>
+        <input type="date" id="dob" required>
 
-function updateTable() {
-    document.getElementById("countApps").innerText = apps.length;
-    let table = document.getElementById("appTable");
+        <label>Upload Resume (PDF)</label>
+        <input type="file" id="resume" accept="application/pdf">
 
-    // Clear all except header
-    table.innerHTML = `
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-        </tr>
-    `;
+        <button type="submit" class="btn">Submit Application</button>
+    </form>
+</section>
 
-    apps.forEach(a => {
-        table.innerHTML += `
-            <tr>
-                <td>${a.name}</td>
-                <td>${a.email}</td>
-                <td>${a.role}</td>
-            </tr>
-        `;
-    });
-}
+<!-- ADMIN LOGIN PAGE -->
+<section id="admin-login" class="page">
+    <h2 class="title">Admin Login</h2>
 
-function adminLogin() {
-    let user = document.getElementById("adminUser").value;
-    let pass = document.getElementById("adminPass").value;
+    <div class="glass-box">
+        <label>Username</label>
+        <input type="text" id="adminUser">
 
-    if (user === "ADMIN" && pass === "Waffles2013.") {
-        document.getElementById("adminPanel").style.display = "block";
-        alert("Admin Logged In ✔️");
-    } else {
-        alert("Incorrect Login ❌");
-    }
-}
-</script>
+        <label>Password</label>
+        <input type="password" id="adminPass">
 
+        <button onclick="adminLogin()" class="btn">Login</button>
+    </div>
+</section>
+
+<!-- ADMIN DASHBOARD -->
+<section id="admin" class="page">
+    <h2 class="title">Admin Dashboard</h2>
+
+    <div id="applications"></div>
+
+    <button onclick="logout()" class="btn danger">Logout</button>
+</section>
+
+<script src="app.js"></script>
 </body>
-</html>     
+</html>
